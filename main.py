@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 import sklearn as skl
@@ -37,26 +36,15 @@ def PCA(X):
     print(transformed_data)
 
 
-(train_np, train_target), (test_np, test_target) = data_processing('Covid Data.csv')
-
-PCA(train_np)
-
 # Second Model: Support Vector Machine
 # Assumption Made: Assume the data is linearly separable.
 def SVM(train):
     clf = svm.SVC()
-
     start = time.time()  # time how long it take for the model to train
     clf.fit(train[0], train[1])
     stop = time.time()  # stop timing
-
     print(f"Training time: {stop - start}s")
-
     dump(clf, 'SVMweights.joblib')
-
-
-def train(train_np, train_target):
-    SVM((train_np, train_target))  # training the model
 
 
 def get_model():
@@ -74,13 +62,6 @@ def score_SVM(clf, X, y):
     print(scores)
 
 
-# score_SVM(clf, train_np, train_target)
-
-
-def SVMmain():
-    (train_np, train_target), (test_np, test_target) = data_processing('Covid Data.csv')
-
-
 # Three Models:
 
 # First Model: Multi-Class Naive Bayes
@@ -89,7 +70,7 @@ def SVMmain():
 
 def naive_bayes(X, y):
     model = CategoricalNB()
-    model.fit(train_np, train_target)
+    model.fit(X, y)
     return model
 
 
@@ -106,3 +87,12 @@ def score_naive_bayes(model, X, y):
 
 # Second Model: Support Vector Machine
 # Third Model: Decision Trees/Random Forest
+
+
+def train_models():
+    (train_np, train_target), (test_np, test_target) = data_processing('Covid Data.csv')
+    SVM((train_np, train_target))  # training the model
+    naive_bayes(train_np, train_target)
+
+
+train_models()
